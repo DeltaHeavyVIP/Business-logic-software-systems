@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,6 @@ public class GenreEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToMany(mappedBy = "genreFilm")
-    private Set<FilmEntity> genre;
+    @ManyToMany(mappedBy = "genreFilm", fetch = FetchType.LAZY)
+    private Set<FilmEntity> genre = new HashSet<>();
 }

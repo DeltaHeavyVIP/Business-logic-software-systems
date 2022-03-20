@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,7 +27,7 @@ public class FilmEntity {
             name = "film_genre",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "genres_id"))
-    private Set<GenreEntity> genreFilm;
+    private Set<GenreEntity> genreFilm = new HashSet<>();
 
     @NotBlank
     @Column(name = "description")
