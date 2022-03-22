@@ -19,7 +19,7 @@ public class Cards {
     Integer id;
 
     @NotBlank
-    @Pattern(regexp="(^$|[0-9]{16})")
+    @Pattern(regexp = "(^$|[0-9]{16})")
     @Column(name = "cardNumber")
     private String cardNumber;
 
@@ -30,7 +30,7 @@ public class Cards {
     @Column(name = "cardCVC")
     private Integer cardCVC;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users", referencedColumnName = "id")
     private Users user;
 }

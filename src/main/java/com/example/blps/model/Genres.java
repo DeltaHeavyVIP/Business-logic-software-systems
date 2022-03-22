@@ -25,7 +25,7 @@ public class Genres {
     @ManyToMany
     @JoinTable(
             name = "film_genre",
-            joinColumns = @JoinColumn(name = "genres_id"),
-            inverseJoinColumns = @JoinColumn(name = "films_id"))
+            joinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "films_id", referencedColumnName = "id"))
     private Set<Films> genreFilm = new HashSet<>();
 }

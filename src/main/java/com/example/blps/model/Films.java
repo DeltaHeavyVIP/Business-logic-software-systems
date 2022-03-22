@@ -34,7 +34,7 @@ public class Films {
 //    private byte[] filmPicture;
 
     @ManyToMany(mappedBy = "genreFilm", fetch = FetchType.LAZY)
-    private Set<Users> filmGenre = new HashSet<>();
+    private Set<Genres> filmGenre = new HashSet<>();
 
     @ManyToMany(mappedBy = "userFilm", fetch = FetchType.LAZY)
     private Set<Users> filmUser = new HashSet<>();

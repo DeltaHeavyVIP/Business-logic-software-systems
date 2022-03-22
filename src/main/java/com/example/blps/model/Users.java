@@ -33,17 +33,14 @@ public class Users {
     private String phoneNumber;
 
     @NotBlank
-    @Column(name = "status",columnDefinition = "varchar(255) default 'Nothing'")
+    @Column(name = "status", columnDefinition = "varchar(255) default 'Nothing'")
     private String status;
-
-    @OneToMany(mappedBy = "users", fetch = FetchType.EAGER)
-    private Set<Cards> cardEntities = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
             name = "user_film",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "films_id"))
+            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "films_id", referencedColumnName = "id"))
     private Set<Films> userFilm = new HashSet<>();
 
 }
