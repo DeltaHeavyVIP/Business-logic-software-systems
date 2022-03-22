@@ -11,8 +11,8 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@Table(name = "film")
-public class FilmEntity {
+@Table(name = "films")
+public class Films {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,18 +22,20 @@ public class FilmEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "film_genre",
-            joinColumns = @JoinColumn(name = "film_id"),
-            inverseJoinColumns = @JoinColumn(name = "genres_id"))
-    private Set<GenreEntity> genreFilm = new HashSet<>();
-
     @NotBlank
     @Column(name = "description")
     private String description;
 
-    @Lob
-    @Column(name = "picture", columnDefinition = "BLOB")
-    private byte[] filmPicture;
+    @Column(name = "cost")
+    private Integer cost;
+
+//    @Lob
+//    @Column(name = "picture", columnDefinition = "BLOB")
+//    private byte[] filmPicture;
+
+    @ManyToMany(mappedBy = "genreFilm", fetch = FetchType.LAZY)
+    private Set<Users> filmGenre = new HashSet<>();
+
+    @ManyToMany(mappedBy = "userFilm", fetch = FetchType.LAZY)
+    private Set<Users> filmUser = new HashSet<>();
 }
