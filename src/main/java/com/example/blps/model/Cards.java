@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,7 +28,7 @@ public class Cards {
 
     @NotNull
     @Column(name = "cardDateEnd")
-    private Date cardDateEnd;
+    private LocalDate cardDateEnd;
 
     @NotNull
     @Column(name = "cardCVC")

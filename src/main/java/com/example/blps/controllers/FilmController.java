@@ -1,6 +1,7 @@
 package com.example.blps.controllers;
 
 import com.example.blps.dto.FilmDto;
+import com.example.blps.dto.FilmUserDTO;
 import com.example.blps.dto.UserDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
@@ -36,7 +37,7 @@ public class FilmController {
             @ApiResponse(code = 400, message = "Bad Request, wrong data "),
     })
     @ApiOperation(value = "add user", response = Map.class)
-    @PostMapping("addUser")
+    @PostMapping("/addUser")
     public Users addUser(@RequestBody UserDto data) {
         return usersService.addUser(data.getPhoneNumber());
     }
@@ -46,7 +47,7 @@ public class FilmController {
             @ApiResponse(code = 400, message = "Have a problem with films in database"),
     })
     @ApiOperation(value = "get all films", response = Map.class)
-    @PostMapping("allFilms")
+    @PostMapping("/allFilms")
     public List<Films> allFilms() {
         return filmService.getAllFilms();
     }
@@ -56,12 +57,22 @@ public class FilmController {
             @ApiResponse(code = 400, message = "Bad Request, film not found"),
     })
     @ApiOperation(value = "get select film", response = Map.class)
-    @PostMapping("selectFilm")
+    @PostMapping("/selectFilm")
     public Object selectFilm(FilmDto data) {
         try {
             return filmService.getSelectFilm(data.getFilmId());
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Object.class),
+            @ApiResponse(code = 400, message = "Bad Request, film not found"),
+    })
+    @ApiOperation(value = "add film to user", response = Map.class)
+    @PostMapping("/addFilmToUser")
+    public Films addFilmToUser(FilmUserDTO data) {
+        return usersService.addFilmToUser(data);
     }
 }
