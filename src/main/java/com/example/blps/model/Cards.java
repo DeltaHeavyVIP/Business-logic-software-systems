@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
@@ -23,12 +24,17 @@ public class Cards {
     @Column(name = "cardNumber")
     private String cardNumber;
 
-    @NotBlank
+    @NotNull
     @Column(name = "cardDateEnd")
     private Date cardDateEnd;
 
+    @NotNull
     @Column(name = "cardCVC")
     private Integer cardCVC;
+
+    @NotNull
+    @Column(name = "money")
+    private Integer money;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "users", referencedColumnName = "id")

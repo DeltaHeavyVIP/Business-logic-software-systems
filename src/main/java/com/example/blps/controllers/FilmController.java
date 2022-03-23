@@ -1,35 +1,67 @@
 package com.example.blps.controllers;
 
-import com.example.blps.dto.IdFilmDto;
+import com.example.blps.dto.FilmDto;
+import com.example.blps.dto.UserDto;
+import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
-import com.example.blps.service.FilmService;
+import com.example.blps.model.Users;
+import com.example.blps.service.FilmsService;
+import com.example.blps.service.UsersService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 @RestController
-@RequestMapping("film")
+@RequestMapping("/youtube")
 public class FilmController {
 
     @Autowired
-    private FilmService filmService;
+    private FilmsService filmService;
 
-    @GetMapping("all")
-    public List<Films> findAllFilm() {
-        return filmService.getAllFilm();
+    @Autowired
+    private UsersService usersService;
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Object.class),
+            @ApiResponse(code = 400, message = "Bad Request, wrong data "),
+    })
+    @ApiOperation(value = "add user", response = Map.class)
+    @PostMapping("addUser")
+    public Users addUser(@RequestBody UserDto data) {
+        return usersService.addUser(data.getPhoneNumber());
     }
 
-    @PostMapping("select")
-    public Optional<Films> findSelectFilm(@Valid @RequestBody IdFilmDto data) {
-        return filmService.getSelectFilm(data.getFilmId());
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Object.class),
+            @ApiResponse(code = 400, message = "Have a problem with films in database"),
+    })
+    @ApiOperation(value = "get all films", response = Map.class)
+    @PostMapping("allFilms")
+    public List<Films> allFilms() {
+        return filmService.getAllFilms();
     }
 
-//    @PostMapping("/payment")
-//    public ResponseEntity<?> payFilm(@Valid @RequestBody CardDto data){
-//        return ResponseEntity.ok(payUrl(CardDto.getMoney()));
-//    }
-
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Object.class),
+            @ApiResponse(code = 400, message = "Bad Request, film not found"),
+    })
+    @ApiOperation(value = "get select film", response = Map.class)
+    @PostMapping("selectFilm")
+    public Object selectFilm(FilmDto data) {
+        try {
+            return filmService.getSelectFilm(data.getFilmId());
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

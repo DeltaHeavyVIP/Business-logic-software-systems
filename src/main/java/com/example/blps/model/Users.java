@@ -19,11 +19,9 @@ public class Users {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotBlank
     @Column(name = "firstName")
     private String firstName;
 
-    @NotBlank
     @Column(name = "lastName")
     private String lastName;
 
@@ -31,10 +29,6 @@ public class Users {
     @Pattern(regexp = "(^$|[0-9]{11})")
     @Column(name = "phone")
     private String phoneNumber;
-
-    @NotBlank
-    @Column(name = "status", columnDefinition = "varchar(255) default 'Nothing'")
-    private String status;
 
     @ManyToMany
     @JoinTable(
