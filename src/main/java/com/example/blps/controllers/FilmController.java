@@ -1,7 +1,7 @@
 package com.example.blps.controllers;
 
 import com.example.blps.dto.FilmDto;
-import com.example.blps.dto.FilmUserDTO;
+import com.example.blps.dto.FilmUserDto;
 import com.example.blps.dto.UserDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
@@ -39,7 +39,7 @@ public class FilmController {
     @ApiOperation(value = "add user", response = Map.class)
     @PostMapping("/addUser")
     public Users addUser(@RequestBody UserDto data) {
-        return usersService.addUser(data.getPhoneNumber());
+        return usersService.addUser(data);
     }
 
     @ApiResponses(value = {
@@ -58,9 +58,9 @@ public class FilmController {
     })
     @ApiOperation(value = "get select film", response = Map.class)
     @PostMapping("/selectFilm")
-    public Object selectFilm(FilmDto data) {
+    public Object selectFilm(@RequestBody FilmDto data) {
         try {
-            return filmService.getSelectFilm(data.getFilmId());
+            return filmService.getSelectFilm(data);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -72,7 +72,7 @@ public class FilmController {
     })
     @ApiOperation(value = "add film to user", response = Map.class)
     @PostMapping("/addFilmToUser")
-    public Films addFilmToUser(FilmUserDTO data) {
+    public Films addFilmToUser(@RequestBody FilmUserDto data) {
         return usersService.addFilmToUser(data);
     }
 }

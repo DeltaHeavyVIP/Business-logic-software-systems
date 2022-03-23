@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-public class CardDTO {
+public class CardDto {
     private String cardNumber;
     private LocalDate cardDateEnd;
     private Integer cardCVC;

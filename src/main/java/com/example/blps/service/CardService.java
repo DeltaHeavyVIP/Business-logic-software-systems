@@ -1,17 +1,14 @@
 package com.example.blps.service;
 
-import com.example.blps.dto.CardDTO;
-import com.example.blps.dto.PaymentDTO;
+import com.example.blps.dto.CardDto;
+import com.example.blps.dto.PaymentDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Cards;
-import com.example.blps.model.Films;
-import com.example.blps.model.Users;
 import com.example.blps.repositories.CardsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class CardService {
     @Autowired
     private CardsRepo cardsRepo;
 
-    public List<Cards> modifyCardMoneyIfExist(PaymentDTO paymentDTO) {
+    public List<Cards> modifyCardMoneyIfExist(PaymentDto paymentDTO) {
         List<Cards> cards = cardsRepo.findCardsByUser_Id(paymentDTO.getUserId());
 
         if(cards.size() == 0){
@@ -44,7 +41,7 @@ public class CardService {
         return cards;
     }
 
-    public Cards addCard(CardDTO cardDTO) {
+    public Cards addCard(CardDto cardDTO) {
 
         String cardNumber = cardDTO.getCardNumber();
         if (cardsRepo.countCardsByCardNumber(cardNumber) != 0) {
@@ -61,7 +58,7 @@ public class CardService {
         return newCard;
     }
 
-    public boolean checkCardInformation(CardDTO cardDTO){
+    public boolean checkCardInformation(CardDto cardDTO){
         String regex_cardNumber = "(^$|[0-9]{16})";
         String regex_cardCVC = "(^$|[0-9]{3})";
 

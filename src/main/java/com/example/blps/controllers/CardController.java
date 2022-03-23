@@ -1,11 +1,9 @@
 package com.example.blps.controllers;
 
 
-import com.example.blps.dto.CardDTO;
-import com.example.blps.dto.PaymentDTO;
-import com.example.blps.dto.UserDto;
+import com.example.blps.dto.CardDto;
+import com.example.blps.dto.PaymentDto;
 import com.example.blps.model.Cards;
-import com.example.blps.model.Users;
 import com.example.blps.service.CardService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -29,7 +27,7 @@ public class CardController {
     })
     @ApiOperation(value = "add card", response = Map.class)
     @PostMapping("/addCard")
-    public Cards addCard(@RequestBody CardDTO data) {
+    public Cards addCard(@RequestBody CardDto data) {
         return cardService.addCard(data);
     }
 
@@ -40,7 +38,7 @@ public class CardController {
     })
     @ApiOperation(value = "modify card money", response = Map.class)
     @PostMapping("/modifyCardMoney")
-    public List<Cards> addCard(@RequestBody PaymentDTO data) {
+    public List<Cards> addCard(@RequestBody PaymentDto data) {
         return cardService.modifyCardMoneyIfExist(data);
     }
 
@@ -50,7 +48,7 @@ public class CardController {
     })
     @ApiOperation(value = "check card information", response = Map.class)
     @PostMapping("/checkCard")
-    public boolean checkCardInformation(@RequestBody CardDTO data) {
+    public boolean checkCardInformation(@RequestBody CardDto data) {
         return cardService.checkCardInformation(data);
     }
 

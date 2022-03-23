@@ -1,11 +1,10 @@
 package com.example.blps.service;
 
-import com.example.blps.dto.FilmDto;
-import com.example.blps.dto.FilmUserDTO;
+import com.example.blps.dto.FilmUserDto;
+import com.example.blps.dto.UserDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
 import com.example.blps.model.Users;
-import com.example.blps.dto.UserDto;
 import com.example.blps.repositories.CardsRepo;
 import com.example.blps.repositories.FilmsRepo;
 import com.example.blps.repositories.GenresRepo;
@@ -33,18 +32,18 @@ public class UsersService {
     @Autowired
     private UsersRepo usersRepo;
 
-    public Users addUser(String phoneNumber) {
-        Users users = usersRepo.findUsersByPhoneNumber(phoneNumber);
-        if(users == null){
+    public Users addUser(UserDto data) {
+        Users users = usersRepo.findUsersByPhoneNumber(data.getPhoneNumber());
+        if (users == null) {
             Users newUsers = new Users();
-            newUsers.setPhoneNumber(phoneNumber);
+            newUsers.setPhoneNumber(data.getPhoneNumber());
             newUsers = usersRepo.save(newUsers);
             return newUsers;
         }
         return users;
     }
 
-    public Films addFilmToUser(FilmUserDTO filmUserDTO) {
+    public Films addFilmToUser(FilmUserDto filmUserDTO) {
 
         Users user = usersRepo.findUsersByPhoneNumber(filmUserDTO.getPhoneNumber());
         Films film = filmRepo.findFilmsById(filmUserDTO.getFilmId());
@@ -56,7 +55,7 @@ public class UsersService {
                 throw new ResourceNotFoundException("this film already exist");
             }
         }
-        if (flag){
+        if (flag) {
             userFilmSet.add(film);
         }
         user.setUserFilm(userFilmSet);
