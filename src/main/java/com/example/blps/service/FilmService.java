@@ -1,7 +1,7 @@
 package com.example.blps.service;
 
 import com.example.blps.model.Films;
-import com.example.blps.repositories.FilmRepo;
+import com.example.blps.repositories.FilmsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FilmService {
     @Autowired
-    private FilmRepo filmRepo;
+    private FilmsRepo filmRepo;
 
     public List<Films> getAllFilm() {
         return filmRepo.findAll();
