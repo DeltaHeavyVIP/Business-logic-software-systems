@@ -5,6 +5,7 @@ import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Cards;
 import com.example.blps.model.Films;
 import com.example.blps.repositories.CardsRepo;
+import com.example.blps.repositories.UsersRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class CardService {
 
     @Autowired
     private CardsRepo cardsRepo;
+
+    @Autowired
+    private UsersRepo usersRepo;
 
     public void modifyCardMoneyIfExist(Integer userId, Films film) {
         List<Cards> cards = cardsRepo.findCardsByUser_Id(userId);
@@ -53,6 +57,7 @@ public class CardService {
         newCard.setCardCVC(cardDto.getCardCVC());
         newCard.setMoney(cardDto.getMoney());
         newCard.setCardDateEnd(cardDto.getCardDateEnd());
+        newCard.setUser(usersRepo.findUsersById(cardDto.getUserId()));
         cardsRepo.save(newCard);
     }
 
