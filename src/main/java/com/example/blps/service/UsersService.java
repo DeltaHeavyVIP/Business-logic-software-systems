@@ -56,5 +56,6 @@ public class UsersService {
             userFilmSet.add(film);
         }
         user.setUserFilm(userFilmSet);
+        user = usersRepo.save(user);
     }
 }

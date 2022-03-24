@@ -37,6 +37,7 @@ public class FilmsService {
 
     public List<Films> getAllFilms() {
         return filmRepo.findAll();
+
     }
 
     public String getSelectFilm(Integer filmId, Integer cardId) {

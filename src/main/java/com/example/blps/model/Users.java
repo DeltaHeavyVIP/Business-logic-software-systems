@@ -1,5 +1,6 @@
 package com.example.blps.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","userFilm"})
 @Table(name = "users")
 public class Users {
     @Id

@@ -9,6 +9,4 @@ public class FilmDto {
     private Integer filmId;
     private Integer userId;
 
-    public FilmDto(Integer filmId, Integer userId) {
-    }
 }

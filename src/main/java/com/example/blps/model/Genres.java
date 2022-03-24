@@ -1,5 +1,7 @@
 package com.example.blps.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","genreFilm"})
 @Table(name = "genres")
 public class Genres {
     @Id
@@ -23,5 +26,5 @@ public class Genres {
     private String genre;
 
     @ManyToMany(mappedBy = "filmGenre", fetch = FetchType.LAZY)
-    private Set<Films> genreFilm = new HashSet<>();
+    private Set<Films> genreFilm;
 }
