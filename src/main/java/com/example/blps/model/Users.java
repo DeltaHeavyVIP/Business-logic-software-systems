@@ -30,7 +30,7 @@ public class Users {
     @Column(name = "phone")
     private String phoneNumber;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_film",
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "id"),

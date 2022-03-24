@@ -22,7 +22,7 @@ public class Genres {
     @Column(name = "genre")
     private String genre;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "film_genre",
             joinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"),
