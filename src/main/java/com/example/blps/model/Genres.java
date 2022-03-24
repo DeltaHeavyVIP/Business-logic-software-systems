@@ -22,10 +22,6 @@ public class Genres {
     @Column(name = "genre")
     private String genre;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "film_genre",
-            joinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "films_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "filmGenre", fetch = FetchType.LAZY)
     private Set<Films> genreFilm = new HashSet<>();
 }

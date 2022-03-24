@@ -36,7 +36,11 @@ public class Films {
 //    @Column(name = "picture", columnDefinition = "BLOB")
 //    private byte[] filmPicture;
 
-    @ManyToMany(mappedBy = "genreFilm", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "film_genre",
+            joinColumns = @JoinColumn(name = "films_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "genres_id", referencedColumnName = "id"))
     private Set<Genres> filmGenre = new HashSet<>();
 
     @ManyToMany(mappedBy = "userFilm", fetch = FetchType.LAZY)
