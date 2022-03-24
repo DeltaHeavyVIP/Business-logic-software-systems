@@ -12,4 +12,6 @@ public class CardDto {
     private LocalDate cardDateEnd;
     private Integer cardCVC;
     private Integer money;
+    private Integer filmId;
+    private Integer userId;
 }

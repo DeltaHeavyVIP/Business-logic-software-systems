@@ -1,7 +1,6 @@
 package com.example.blps.controllers;
 
 import com.example.blps.dto.FilmDto;
-import com.example.blps.dto.FilmUserDto;
 import com.example.blps.dto.UserDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
@@ -64,15 +63,5 @@ public class FilmController {
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Object.class),
-            @ApiResponse(code = 400, message = "Bad Request, film not found"),
-    })
-    @ApiOperation(value = "add film to user", response = Map.class)
-    @PostMapping("/addFilmToUser")
-    public Films addFilmToUser(@RequestBody FilmUserDto data) {
-        return usersService.addFilmToUser(data);
     }
 }

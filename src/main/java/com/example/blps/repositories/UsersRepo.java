@@ -11,4 +11,5 @@ import java.util.List;
 public interface UsersRepo extends JpaRepository<Users, Integer> {
     Users findUsersByPhoneNumber(String phoneNumber);
 
+    Users findUsersById(Integer id);
 }

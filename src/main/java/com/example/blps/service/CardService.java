@@ -1,9 +1,10 @@
 package com.example.blps.service;
 
 import com.example.blps.dto.CardDto;
-import com.example.blps.dto.PaymentDto;
+import com.example.blps.dto.FilmDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Cards;
+import com.example.blps.model.Films;
 import com.example.blps.repositories.CardsRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,19 @@ public class CardService {
     @Autowired
     private CardsRepo cardsRepo;
 
-    public List<Cards> modifyCardMoneyIfExist(PaymentDto paymentDTO) {
-        List<Cards> cards = cardsRepo.findCardsByUser_Id(paymentDTO.getUserId());
+    @Autowired
+    private FilmsService filmsService;
+
+    public void modifyCardMoneyIfExist(Integer userId,Films film) {
+        List<Cards> cards = cardsRepo.findCardsByUser_Id(userId);
 
         if(cards.size() == 0){
             throw new ResourceNotFoundException("error no card found");
         } else {
             boolean flag = false;
             for (Cards i : cards){
-                if (i.getMoney() > paymentDTO.getCost()) {
-                    i.setMoney(i.getMoney()-paymentDTO.getCost());
+                if (i.getMoney() > film.getCost()) {
+                    i.setMoney(i.getMoney()-film.getCost());
                     flag = true;
                     break;
                 }
@@ -36,13 +40,13 @@ public class CardService {
             if (!flag) {
                 throw new ResourceNotFoundException("error no money found");
             }
-
         }
-        return cards;
     }
 
-    public Cards addCard(CardDto cardDTO) {
-
+    public void addCard(CardDto cardDTO) {
+        if (!checkCardInformation(cardDTO)) {
+            throw new ResourceNotFoundException("Bad data in cardDto");
+        }
         String cardNumber = cardDTO.getCardNumber();
         if (cardsRepo.countCardsByCardNumber(cardNumber) != 0) {
             throw new ResourceNotFoundException("this card already exist");
@@ -53,9 +57,9 @@ public class CardService {
         newCard.setCardCVC(cardDTO.getCardCVC());
         newCard.setMoney(cardDTO.getMoney());
         newCard.setCardDateEnd(cardDTO.getCardDateEnd());
-        newCard = cardsRepo.save(newCard);
+        cardsRepo.save(newCard);
 
-        return newCard;
+        filmsService.getSelectFilm(new FilmDto(cardDTO.getFilmId(),cardDTO.getUserId()));
     }
 
     public boolean checkCardInformation(CardDto cardDTO){
@@ -71,11 +75,9 @@ public class CardService {
         if (cardDTO.getMoney() < 0){
             return false;
         }
-
         if (cardDTO.getCardDateEnd().compareTo(LocalDate.now()) < 0) {
             return false;
         }
-
         return true;
     }
 

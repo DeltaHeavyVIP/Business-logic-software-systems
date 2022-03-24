@@ -1,6 +1,5 @@
 package com.example.blps.service;
 
-import com.example.blps.dto.FilmUserDto;
 import com.example.blps.dto.UserDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
@@ -43,10 +42,10 @@ public class UsersService {
         return users;
     }
 
-    public Films addFilmToUser(FilmUserDto filmUserDTO) {
+    public Films addFilmToUser(Integer id,Integer filmId) {
 
-        Users user = usersRepo.findUsersByPhoneNumber(filmUserDTO.getPhoneNumber());
-        Films film = filmRepo.findFilmsById(filmUserDTO.getFilmId());
+        Users user = usersRepo.findUsersById(id);
+        Films film = filmRepo.findFilmsById(filmId);
         Set<Films> userFilmSet = user.getUserFilm();
         boolean flag = true;
         for (Films i : userFilmSet) {
@@ -60,7 +59,5 @@ public class UsersService {
         }
         user.setUserFilm(userFilmSet);
         return film;
-
     }
-
 }

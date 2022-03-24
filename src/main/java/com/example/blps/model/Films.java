@@ -29,6 +29,9 @@ public class Films {
     @Column(name = "cost")
     private Integer cost;
 
+    @Column(name = "token")
+    private String token;
+
 //    @Lob
 //    @Column(name = "picture", columnDefinition = "BLOB")
 //    private byte[] filmPicture;

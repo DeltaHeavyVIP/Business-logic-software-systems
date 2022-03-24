@@ -29,16 +29,30 @@ public class FilmsService {
     @Autowired
     private UsersRepo usersRepo;
 
+    @Autowired
+    private CardService cardService;
+
+    @Autowired
+    private UsersService usersService;
+
 
     public List<Films> getAllFilms() {
         return filmRepo.findAll();
     }
 
-    public Films getSelectFilm(FilmDto data) {
+    public String getSelectFilm(FilmDto data) {
         Films film = filmRepo.findFilmsById(data.getFilmId());
         if (film == null) {
             throw new ResourceNotFoundException("Данный фильм не найден в базе данных");
         }
-        return film;
+        if (film.getCost() != 0) {
+            cardService.modifyCardMoneyIfExist(data.getUserId(), film);
+        }
+        try {
+            usersService.addFilmToUser(data.getUserId(), film.getId());
+        }catch (ResourceNotFoundException e) {
+            System.out.println("Hello world");
+        }
+        return film.getToken();
     }
 }
