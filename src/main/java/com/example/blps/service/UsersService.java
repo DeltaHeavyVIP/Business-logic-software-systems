@@ -1,7 +1,6 @@
 package com.example.blps.service;
 
 import com.example.blps.dto.UserDto;
-import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
 import com.example.blps.model.Users;
 import com.example.blps.repositories.CardsRepo;
@@ -42,7 +41,7 @@ public class UsersService {
         return users;
     }
 
-    public Films addFilmToUser(Integer id,Integer filmId) {
+    public void addFilmToUser(Integer id, Integer filmId) {
 
         Users user = usersRepo.findUsersById(id);
         Films film = filmRepo.findFilmsById(filmId);
@@ -51,13 +50,11 @@ public class UsersService {
         for (Films i : userFilmSet) {
             if (Objects.equals(i.getId(), film.getId())) {
                 flag = false;
-                throw new ResourceNotFoundException("this film already exist");
             }
         }
         if (flag) {
             userFilmSet.add(film);
         }
         user.setUserFilm(userFilmSet);
-        return film;
     }
 }

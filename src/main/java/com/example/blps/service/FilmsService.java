@@ -48,11 +48,7 @@ public class FilmsService {
         if (film.getCost() != 0) {
             cardService.modifyCardMoneyIfExist(data.getUserId(), film);
         }
-        try {
-            usersService.addFilmToUser(data.getUserId(), film.getId());
-        }catch (ResourceNotFoundException e) {
-            System.out.println("Hello world");
-        }
+        usersService.addFilmToUser(data.getUserId(), film.getId());
         return film.getToken();
     }
 }
