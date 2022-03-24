@@ -1,6 +1,5 @@
 package com.example.blps.service;
 
-import com.example.blps.dto.FilmDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
 import com.example.blps.repositories.CardsRepo;
@@ -40,15 +39,15 @@ public class FilmsService {
         return filmRepo.findAll();
     }
 
-    public String getSelectFilm(FilmDto data) {
-        Films film = filmRepo.findFilmsById(data.getFilmId());
+    public String getSelectFilm(Integer filmId, Integer cardId) {
+        Films film = filmRepo.findFilmsById(filmId);
         if (film == null) {
             throw new ResourceNotFoundException("Данный фильм не найден в базе данных");
         }
         if (film.getCost() != 0) {
-            cardService.modifyCardMoneyIfExist(data.getUserId(), film);
+            cardService.modifyCardMoneyIfExist(cardId, film);
         }
-        usersService.addFilmToUser(data.getUserId(), film.getId());
+        usersService.addFilmToUser(cardId, film.getId());
         return film.getToken();
     }
 }

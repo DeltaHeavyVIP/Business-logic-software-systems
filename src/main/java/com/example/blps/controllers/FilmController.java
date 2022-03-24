@@ -59,7 +59,7 @@ public class FilmController {
     @PostMapping("/selectFilm")
     public Object selectFilm(@RequestBody FilmDto data) {
         try {
-            return filmService.getSelectFilm(data);
+            return filmService.getSelectFilm(data.getFilmId(),data.getUserId());
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
