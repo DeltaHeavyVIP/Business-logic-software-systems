@@ -13,7 +13,7 @@ public class JwtRole implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @NotBlank
     @Column(name = "role_name")
