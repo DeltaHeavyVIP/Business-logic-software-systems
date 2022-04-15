@@ -7,6 +7,4 @@ import java.util.Date;
 @Data
 public class FilmDto {
     private Integer filmId;
-    private Integer userId;
-
 }

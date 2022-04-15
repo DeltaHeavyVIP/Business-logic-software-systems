@@ -32,10 +32,6 @@ public class Films {
     @Column(name = "token")
     private String token;
 
-//    @Lob
-//    @Column(name = "picture", columnDefinition = "BLOB")
-//    private byte[] filmPicture;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "film_genre",
