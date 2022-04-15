@@ -16,19 +16,19 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
     private final JwtProvider jwtProvider;
 
-    public JwtFilter(JwtProvider jwtProvider){
-        this.jwtProvider=jwtProvider;
+    public JwtFilter(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String token = jwtProvider.resolveToken((HttpServletRequest) servletRequest);
-        if(token!=null && jwtProvider.validateToken(token)){
+        if (token != null && jwtProvider.validateToken(token)) {
             Authentication authentication = jwtProvider.getAuthentication(token);
             if (authentication != null) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        filterChain.doFilter(servletRequest,servletResponse);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 }

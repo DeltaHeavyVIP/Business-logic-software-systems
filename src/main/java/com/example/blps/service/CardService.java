@@ -23,6 +23,10 @@ public class CardService {
     @Autowired
     private UsersRepo usersRepo;
 
+    @Autowired
+    private UsersService usersService;
+
+
     public void modifyCardMoneyIfExist(Integer userId, Films film) {
         List<Cards> cards = cardsRepo.findCardsByUser_Id(userId);
 
@@ -57,7 +61,7 @@ public class CardService {
         newCard.setCardCVC(cardDto.getCardCVC());
         newCard.setMoney(cardDto.getMoney());
         newCard.setCardDateEnd(cardDto.getCardDateEnd());
-        newCard.setUser(usersRepo.findUsersById(cardDto.getUserId()));
+        newCard.setUser(usersRepo.findUsersById(usersService.getUserIdFromToken(cardDto.getToken())));
         cardsRepo.save(newCard);
     }
 

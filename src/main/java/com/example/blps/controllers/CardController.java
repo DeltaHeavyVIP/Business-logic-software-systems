@@ -3,7 +3,6 @@ package com.example.blps.controllers;
 
 import com.example.blps.dto.CardDto;
 import com.example.blps.exception.ResourceNotFoundException;
-import com.example.blps.model.Cards;
 import com.example.blps.service.CardService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
