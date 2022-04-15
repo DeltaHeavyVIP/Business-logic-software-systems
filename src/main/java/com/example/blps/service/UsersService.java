@@ -2,47 +2,70 @@ package com.example.blps.service;
 
 import com.example.blps.dto.UserDto;
 import com.example.blps.model.Films;
+import com.example.blps.model.JwtRole;
+import com.example.blps.model.JwtUsers;
 import com.example.blps.model.Users;
-import com.example.blps.repositories.CardsRepo;
-import com.example.blps.repositories.FilmsRepo;
-import com.example.blps.repositories.GenresRepo;
-import com.example.blps.repositories.UsersRepo;
+import com.example.blps.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Set;
+import javax.management.relation.Role;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class UsersService {
 
     @Autowired
-    private CardsRepo cardsRepo;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private FilmsRepo filmRepo;
 
     @Autowired
-    private GenresRepo genresRepo;
-
-    @Autowired
     private UsersRepo usersRepo;
 
-    public Users addUser(UserDto data) {
-        Users users = usersRepo.findUsersByPhoneNumber(data.getPhoneNumber());
-        if (users == null) {
-            Users newUsers = new Users();
-            newUsers.setPhoneNumber(data.getPhoneNumber());
-            newUsers = usersRepo.save(newUsers);
-            return newUsers;
+    @Autowired
+    private JwtUsersRepo jwtUsersRepo;
+
+    @Autowired
+    private JwtRoleRepo jwtRoleRepo;
+
+    public Users findByPhoneNumber(String phoneNumber) {
+        Users user = usersRepo.findUsersByPhoneNumber(phoneNumber);
+        return user;
+    }
+
+    public JwtUsers register(UserDto data) {
+        JwtUsers newJwtUsers = new JwtUsers();
+        newJwtUsers.setRefreshToken(Base64.getEncoder().encodeToString((UUID.randomUUID()+"&"+data.getUsername()).getBytes()));
+        newJwtUsers.setPassword(bCryptPasswordEncoder.encode(newJwtUsers.getPassword()));
+        newJwtUsers.setUsername(data.getUsername());
+        Set<JwtRole> userRole = new HashSet<>();
+        String[] rolesFromDto = data.getRole().split(",");
+        List<JwtRole> roleFromDatabase = jwtRoleRepo.findAll();
+        for(String roleDto :rolesFromDto){
+            for(JwtRole roleDatabase: roleFromDatabase){
+                if(roleDto.equals(roleDatabase.getAuthority())){
+                    userRole.add(roleDatabase);
+                }
+            }
         }
-        return users;
+        newJwtUsers.setRoles(userRole);
+        JwtUsers jwtUser = jwtUsersRepo.save(newJwtUsers);
+
+        Users newUsers = new Users();
+        newUsers.setPhoneNumber(data.getPhoneNumber());
+        newUsers.setFirstName(data.getFirstName());
+        newUsers.setLastName(data.getLastName());
+        newUsers.setJwtUser(jwtUser);
+        newUsers = usersRepo.save(newUsers);
+        return jwtUser;
     }
 
     public void addFilmToUser(Integer id, Integer filmId) {
-
         Users user = usersRepo.findUsersById(id);
         Films film = filmRepo.findFilmsById(filmId);
         Set<Films> userFilmSet = user.getUserFilm();
@@ -56,6 +79,6 @@ public class UsersService {
             userFilmSet.add(film);
         }
         user.setUserFilm(userFilmSet);
-        user = usersRepo.save(user);
+        usersRepo.save(user);
     }
 }
