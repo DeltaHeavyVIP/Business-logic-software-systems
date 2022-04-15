@@ -1,8 +1,7 @@
 package com.example.blps.config;
 
 
-import com.example.blps.security.JwtFilter;
-import com.example.blps.security.JwtUserDetailService;
+import com.example.blps.security.JwtUsersDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
-    private final JwtUserDetailService jwtUserDetailService;
+    private final JwtUsersDetailService jwtUsersDetailService;
 
     @Autowired
-    public SecurityConfiguration(JwtFilter jwtFilter, JwtUserDetailService jwtUserDetailService){
-        this.jwtFilter=jwtFilter;
-        this.jwtUserDetailService = jwtUserDetailService;
+    public SecurityConfiguration(JwtFilter jwtFilter, JwtUsersDetailService jwtUsersDetailService) {
+        this.jwtFilter = jwtFilter;
+        this.jwtUsersDetailService = jwtUsersDetailService;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(jwtUsersDetailService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
