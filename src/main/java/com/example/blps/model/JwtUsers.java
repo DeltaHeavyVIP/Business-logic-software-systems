@@ -30,6 +30,10 @@ public class JwtUsers implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "jwt_roles_id", referencedColumnName = "id"))
     private Set<JwtRole> roles;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "users_id", referencedColumnName = "id")
+    private Users user;
+
     public JwtUsers() {
     }
 

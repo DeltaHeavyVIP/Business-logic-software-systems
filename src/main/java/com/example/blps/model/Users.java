@@ -39,4 +39,6 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "films_id", referencedColumnName = "id"))
     private Set<Films> userFilm = new HashSet<>();
 
+    @OneToOne(mappedBy = "address")
+    private JwtUsers jwtUser;
 }
