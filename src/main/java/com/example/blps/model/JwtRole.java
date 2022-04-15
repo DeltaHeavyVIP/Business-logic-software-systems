@@ -3,6 +3,7 @@ package com.example.blps.model;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +14,11 @@ public class JwtRole implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @NotBlank
     @Column(name = "role_name")
     private String name;
+
     @Transient
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<JwtUsers> user = new HashSet<>();
