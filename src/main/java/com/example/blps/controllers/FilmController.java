@@ -1,7 +1,7 @@
 package com.example.blps.controllers;
 
 import com.example.blps.dto.FilmDto;
-import com.example.blps.dto.UserDto;
+import com.example.blps.dto.RegisterDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
 import com.example.blps.model.Users;
@@ -37,7 +37,7 @@ public class FilmController {
     })
     @ApiOperation(value = "add user", response = Map.class)
     @PostMapping("/addUser")
-    public Users addUser(@RequestBody UserDto data) {
+    public Users addUser(@RequestBody RegisterDto data) {
         return usersService.addUser(data);
     }
 

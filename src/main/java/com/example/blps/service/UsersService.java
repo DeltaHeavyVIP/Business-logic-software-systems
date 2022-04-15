@@ -1,6 +1,6 @@
 package com.example.blps.service;
 
-import com.example.blps.dto.UserDto;
+import com.example.blps.dto.RegisterDto;
 import com.example.blps.model.Films;
 import com.example.blps.model.JwtRole;
 import com.example.blps.model.JwtUsers;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.*;
 
 @Service
@@ -38,7 +37,7 @@ public class UsersService {
         return user;
     }
 
-    public JwtUsers register(UserDto data) {
+    public JwtUsers register(RegisterDto data) {
         JwtUsers newJwtUsers = new JwtUsers();
         newJwtUsers.setRefreshToken(Base64.getEncoder().encodeToString((UUID.randomUUID()+"&"+data.getUsername()).getBytes()));
         newJwtUsers.setPassword(bCryptPasswordEncoder.encode(newJwtUsers.getPassword()));
