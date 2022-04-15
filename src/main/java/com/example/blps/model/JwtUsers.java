@@ -29,6 +29,10 @@ public class JwtUsers implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @NotBlank
+    @Column(name = "refreshToken")
+    private String refreshToken;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_role",
