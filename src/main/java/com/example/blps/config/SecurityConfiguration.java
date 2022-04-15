@@ -1,6 +1,7 @@
 package com.example.blps.config;
 
 
+import com.example.blps.security.JwtFilter;
 import com.example.blps.security.JwtUsersDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
