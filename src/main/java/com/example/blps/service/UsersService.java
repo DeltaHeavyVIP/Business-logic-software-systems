@@ -40,8 +40,7 @@ public class UsersService {
     private JwtRoleRepo jwtRoleRepo;
 
     public Users findByPhoneNumber(String phoneNumber) {
-        Users user = usersRepo.findUsersByPhoneNumber(phoneNumber);
-        return user;
+        return usersRepo.findUsersByPhoneNumber(phoneNumber);
     }
 
     public JwtUsers register(RegisterDto data) {
@@ -67,7 +66,7 @@ public class UsersService {
         newUsers.setFirstName(data.getFirstName());
         newUsers.setLastName(data.getLastName());
         newUsers.setJwtUser(jwtUser);
-        newUsers = usersRepo.save(newUsers);
+        usersRepo.save(newUsers);
         return jwtUser;
     }
 
@@ -79,6 +78,7 @@ public class UsersService {
         for (Films i : userFilmSet) {
             if (Objects.equals(i.getId(), film.getId())) {
                 flag = false;
+                break;
             }
         }
         if (flag) {

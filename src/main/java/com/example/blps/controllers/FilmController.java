@@ -22,12 +22,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/youtube")
 public class FilmController {
-
     @Autowired
     private FilmsService filmService;
-
-    @Autowired
-    private UsersService usersService;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Object.class),
