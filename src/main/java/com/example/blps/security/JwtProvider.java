@@ -27,11 +27,11 @@ public class JwtProvider {
         this.jwtUsersDetailService = jwtUsersDetailService;
     }
 
-    public String createToken(String username) {
+    public String createToken(String phoneNumber) {
         Date now = new Date();
         Date expired = new Date(now.getTime() + 30 * 1000 * 60);
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(phoneNumber)
                 .setExpiration(expired)
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();

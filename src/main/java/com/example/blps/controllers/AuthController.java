@@ -43,14 +43,14 @@ public class AuthController {
             if (usersService.findByPhoneNumber(registerDto.getPhoneNumber()) != null) {
                 throw new NonUniqueResultException("User with this phone number has been already registered");
             }
-            JwtUsers user = usersService.register(registerDto);
-            String token = jwtProvider.createToken(registerDto.getUsername());
+            JwtUsers jwtUser = usersService.register(registerDto);
+            String token = jwtProvider.createToken(registerDto.getPhoneNumber());
             Authentication authentication = jwtProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             Map<Object, Object> response = new HashMap<>();
             response.put("username", registerDto.getUsername());
-            response.put("refreshToken", user.getRefreshToken());
+            response.put("refreshToken", jwtUser.getRefreshToken());
             response.put("token", token);
 
             return ResponseEntity.ok(response);
@@ -67,8 +67,8 @@ public class AuthController {
             Users user = usersService.findByPhoneNumber(loginDto.getPhoneNumber());
             if (user == null)
                 throw new UsernameNotFoundException("User with phone number " + loginDto.getPhoneNumber() + " not found");
+            String token = jwtProvider.createToken(loginDto.getPhoneNumber());
             JwtUsers jwtUsers = user.getJwtUser();
-            String token = jwtProvider.createToken(jwtUsers.getUsername());
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtUsers.getUsername(), loginDto.getPassword()));
 
             Map<Object, Object> response = new HashMap<>();
