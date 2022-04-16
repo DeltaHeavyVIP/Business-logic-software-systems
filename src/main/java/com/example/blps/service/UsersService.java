@@ -44,9 +44,15 @@ public class UsersService {
     }
 
     public JwtUsers register(RegisterDto data) {
+        Users newUser = new Users();
+        newUser.setPhoneNumber(data.getPhoneNumber());
+        newUser.setFirstName(data.getFirstName());
+        newUser.setLastName(data.getLastName());
+        newUser = usersRepo.save(newUser);
+
         JwtUsers newJwtUsers = new JwtUsers();
         newJwtUsers.setRefreshToken(Base64.getEncoder().encodeToString((UUID.randomUUID() + "&" + data.getUsername()).getBytes()));
-        newJwtUsers.setPassword(bCryptPasswordEncoder.encode(newJwtUsers.getPassword()));
+        newJwtUsers.setPassword(bCryptPasswordEncoder.encode(data.getPassword()));
         newJwtUsers.setUsername(data.getUsername());
         Set<JwtRole> userRole = new HashSet<>();
         String[] rolesFromDto = data.getRole().split(",");
@@ -59,14 +65,8 @@ public class UsersService {
             }
         }
         newJwtUsers.setRoles(userRole);
+        newJwtUsers.setUser(newUser);
         JwtUsers jwtUser = jwtUsersRepo.save(newJwtUsers);
-
-        Users newUsers = new Users();
-        newUsers.setPhoneNumber(data.getPhoneNumber());
-        newUsers.setFirstName(data.getFirstName());
-        newUsers.setLastName(data.getLastName());
-        newUsers.setJwtUser(jwtUser);
-        usersRepo.save(newUsers);
         return jwtUser;
     }
 

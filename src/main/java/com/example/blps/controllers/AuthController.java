@@ -56,7 +56,7 @@ public class AuthController {
             return ResponseEntity.ok(response);
         } catch (NonUniqueResultException | IncorrectResultSizeDataAccessException ex) {
             Map<Object, Object> response = new HashMap<>();
-            response.put("description", "User with username " + registerDto.getUsername() + " has already been registered");
+            response.put("description", "User with phone number " + registerDto.getPhoneNumber() + " has already been registered");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
         }
     }

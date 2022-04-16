@@ -47,10 +47,6 @@ public class JwtUsers implements UserDetails {
     public JwtUsers() {
     }
 
-    public int getId() {
-        return id;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
