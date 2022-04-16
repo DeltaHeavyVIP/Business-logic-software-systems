@@ -63,7 +63,7 @@ public class UsersService {
     public void addFilmToUser(Integer userId, Integer filmId) {
         Users user = usersRepo.findUsersById(userId);
         Films film = filmRepo.findFilmsById(filmId);
-        Set<Films> userFilmSet = user.getUserFilm();
+            Set<Films> userFilmSet = user.getUserFilm();
         boolean flag = true;
         for (Films i : userFilmSet) {
             if (Objects.equals(i.getId(), film.getId())) {

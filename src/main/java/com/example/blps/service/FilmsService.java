@@ -11,6 +11,8 @@ import com.example.blps.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
@@ -39,18 +41,18 @@ public class FilmsService {
 
     public List<Films> getAllFilms() {
         return filmRepo.findAll();
-
     }
 
     public String getSelectFilm(FilmDto data) {
+        String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization").substring(7);
         Films film = filmRepo.findFilmsById(data.getFilmId());
         if (film == null) {
             throw new ResourceNotFoundException("Данный фильм не найден в базе данных");
         }
         if (film.getCost() != 0) {
-            cardService.modifyCardMoneyIfExist(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(data.getToken())).getId(), film);
+            cardService.modifyCardMoneyIfExist(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(token)).getId(), film);
         }
-        usersService.addFilmToUser(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(data.getToken())).getId(), film.getId());
+        usersService.addFilmToUser(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(token)).getId(), film.getId());
         return film.getToken();
     }
 }

@@ -11,6 +11,8 @@ import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -50,6 +52,7 @@ public class CardService {
     }
 
     public void addCard(CardDto cardDto) {
+        String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization").substring(7);
         if (!checkCardInformation(cardDto)) {
             throw new ResourceNotFoundException("Bad data in cardDto");
         }
@@ -63,7 +66,7 @@ public class CardService {
         newCard.setCardCVC(cardDto.getCardCVC());
         newCard.setMoney(cardDto.getMoney());
         newCard.setCardDateEnd(cardDto.getCardDateEnd());
-        newCard.setUser(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(cardDto.getToken())));
+        newCard.setUser(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(token)));
         cardsRepo.save(newCard);
     }
 

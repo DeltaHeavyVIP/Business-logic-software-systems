@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 @Data
 public class CardDto {
-    private String token;
     private String cardNumber;
     private LocalDate cardDateEnd;
     private Integer cardCVC;
