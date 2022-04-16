@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/refresh/")
+@RequestMapping(value = "/api/refresh")
 public class RefreshController {
     private final JwtProvider jwtProvider;
     private final UsersService usersService;
@@ -31,18 +31,18 @@ public class RefreshController {
 
     @PostMapping("/token")
     public ResponseEntity refreshToken(@RequestBody RefreshDto refreshDto){
-        String phoneNumber = new String(Base64.getDecoder().decode(refreshDto.getRefreshToken())).split("&")[1];
-        Users user = usersService.findByPhoneNumber(phoneNumber);
+        String username = new String(Base64.getDecoder().decode(refreshDto.getRefreshToken())).split("&")[1];
+        Users user = usersService.findUserByUserName(username);
         Map<Object, Object> response = new HashMap<>();
 
-        if(user == null) throw new UsernameNotFoundException("User with phone number " + phoneNumber + " not found");
+        if(user == null) throw new UsernameNotFoundException("User with username " + username + " not found");
 
-        if(user.getJwtUser().getRefreshToken().equals(refreshDto.getRefreshToken())) {
-            String token = jwtProvider.createToken(phoneNumber);
+        if(user.getRefreshToken().equals(refreshDto.getRefreshToken())) {
+            String token = jwtProvider.createToken(username);
             Authentication authentication = jwtProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            response.put("phoneNumber", phoneNumber);
-            response.put("refreshToken", user.getJwtUser().getRefreshToken());
+            response.put("username", username);
+            response.put("refreshToken", user.getRefreshToken());
             response.put("token", token);
         }else throw new BadCredentialsException("Invalid refresh token");
 

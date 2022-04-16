@@ -6,6 +6,8 @@ import com.example.blps.model.Cards;
 import com.example.blps.model.Films;
 import com.example.blps.repositories.CardsRepo;
 import com.example.blps.repositories.UsersRepo;
+import com.example.blps.security.JwtProvider;
+import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class CardService {
     private UsersRepo usersRepo;
 
     @Autowired
-    private UsersService usersService;
+    private JwtProvider jwtProvider;
 
 
     public void modifyCardMoneyIfExist(Integer userId, Films film) {
@@ -61,7 +63,7 @@ public class CardService {
         newCard.setCardCVC(cardDto.getCardCVC());
         newCard.setMoney(cardDto.getMoney());
         newCard.setCardDateEnd(cardDto.getCardDateEnd());
-        newCard.setUser(usersRepo.findUsersById(usersService.getUserIdFromToken(cardDto.getToken())));
+        newCard.setUser(usersRepo.findByUsername(jwtProvider.getUsernameFromToken(cardDto.getToken())));
         cardsRepo.save(newCard);
     }
 

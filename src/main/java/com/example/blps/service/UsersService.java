@@ -31,29 +31,22 @@ public class UsersService {
     private UsersRepo usersRepo;
 
     @Autowired
-    private JwtUsersRepo jwtUsersRepo;
-
-    @Autowired
     private JwtProvider jwtProvider;
 
     @Autowired
     private JwtRoleRepo jwtRoleRepo;
 
-    public Users findByPhoneNumber(String phoneNumber) {
-        return usersRepo.findUsersByPhoneNumber(phoneNumber);
+    public Users findUserByUserName(String userName) {
+        return usersRepo.findByUsername(userName);
     }
 
-    public JwtUsers register(RegisterDto data) {
+    public Users register(RegisterDto data) {
         Users newUser = new Users();
-        newUser.setPhoneNumber(data.getPhoneNumber());
         newUser.setFirstName(data.getFirstName());
         newUser.setLastName(data.getLastName());
-        newUser = usersRepo.save(newUser);
-
-        JwtUsers newJwtUsers = new JwtUsers();
-        newJwtUsers.setRefreshToken(Base64.getEncoder().encodeToString((UUID.randomUUID() + "&" + data.getUsername()).getBytes()));
-        newJwtUsers.setPassword(bCryptPasswordEncoder.encode(data.getPassword()));
-        newJwtUsers.setUsername(data.getUsername());
+        newUser.setRefreshToken(Base64.getEncoder().encodeToString((UUID.randomUUID() + "&" + data.getUsername()).getBytes()));
+        newUser.setPassword(bCryptPasswordEncoder.encode(data.getPassword()));
+        newUser.setUsername(data.getUsername());
         Set<JwtRole> userRole = new HashSet<>();
         String[] rolesFromDto = data.getRole().split(",");
         List<JwtRole> roleFromDatabase = jwtRoleRepo.findAll();
@@ -64,10 +57,9 @@ public class UsersService {
                 }
             }
         }
-        newJwtUsers.setRoles(userRole);
-        newJwtUsers.setUser(newUser);
-        JwtUsers jwtUser = jwtUsersRepo.save(newJwtUsers);
-        return jwtUser;
+        newUser.setRoles(userRole);
+        Users user = usersRepo.save(newUser);
+        return user;
     }
 
     public void addFilmToUser(Integer userId, Integer filmId) {
@@ -86,10 +78,5 @@ public class UsersService {
         }
         user.setUserFilm(userFilmSet);
         usersRepo.save(user);
-    }
-
-    public Integer getUserIdFromToken(String token) {
-        JwtUsers jwtUser = jwtUsersRepo.findByUsername(jwtProvider.getUsernameFromToken(token));
-        return jwtUser.getUser().getId();
     }
 }

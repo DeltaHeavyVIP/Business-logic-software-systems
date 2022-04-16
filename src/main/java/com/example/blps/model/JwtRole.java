@@ -21,7 +21,7 @@ public class JwtRole implements GrantedAuthority {
 
     @Transient
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private Set<JwtUsers> user = new HashSet<>();
+    private Set<Users> user = new HashSet<>();
 
     @Override
     public String getAuthority() {

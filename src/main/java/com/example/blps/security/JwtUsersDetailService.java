@@ -1,7 +1,7 @@
 package com.example.blps.security;
 
-import com.example.blps.model.JwtUsers;
-import com.example.blps.repositories.JwtUsersRepo;
+import com.example.blps.model.Users;
+import com.example.blps.repositories.UsersRepo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,19 +9,19 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtUsersDetailService implements UserDetailsService {
-    private final JwtUsersRepo jwtUsersRepo;
+    private final UsersRepo usersRepo;
 
-    public JwtUsersDetailService(JwtUsersRepo jwtUsersRepo) {
-        this.jwtUsersRepo = jwtUsersRepo;
+    public JwtUsersDetailService(UsersRepo usersRepo) {
+        this.usersRepo = usersRepo;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JwtUsers jwtUser = jwtUsersRepo.findByUsername(username);
+        Users user = usersRepo.findByUsername(username);
 
-        if (jwtUser == null) throw new UsernameNotFoundException("User with username " + username + " does not exists");
+        if (user == null) throw new UsernameNotFoundException("User with username " + username + " does not exists");
 
-        return jwtUser;
+        return user;
     }
 
 }
