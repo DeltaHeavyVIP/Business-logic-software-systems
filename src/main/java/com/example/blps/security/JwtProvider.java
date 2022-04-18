@@ -29,7 +29,7 @@ public class JwtProvider {
 
     public String createToken(String userName) {
         Date now = new Date();
-        Date expired = new Date(now.getTime() + 30 * 1000 * 60);
+        Date expired = new Date(now.getTime() + 48 * 60 * 1000 * 60);
         return Jwts.builder()
                 .setSubject(userName)
                 .setExpiration(expired)
