@@ -1,5 +1,7 @@
 package com.example.blps.service;
 
+import com.example.blps.config.AtomikosConfiguration;
+import com.example.blps.config.AtomikosJtaPlatform;
 import com.example.blps.dto.FilmDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
@@ -12,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -39,6 +43,10 @@ public class FilmsService {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     public List<Films> getAllFilms() {
         return filmRepo.findAll();
@@ -50,10 +58,18 @@ public class FilmsService {
         if (film == null) {
             throw new ResourceNotFoundException("Данный фильм не найден в базе данных");
         }
-        if (film.getCost() != 0) {
-            cardService.modifyCardMoneyIfExist(usersRepo.findByUsername(userName).getId(), film);
-        }
-        usersService.addFilmToUser(usersRepo.findByUsername(userName).getId(), film.getId());
+
+        transactionTemplate.execute(
+                status -> {
+                    if (film.getCost() != 0) {
+                        cardService.modifyCardMoneyIfExist(usersRepo.findByUsername(userName).getId(), film);
+                    }
+
+                    usersService.addFilmToUser(usersRepo.findByUsername(userName).getId(), film.getId());
+                    return film;
+                }
+                );
+
         return film.getToken();
     }
 }

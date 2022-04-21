@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.TransactionStatus;
 import java.util.*;
 
 @Service
@@ -33,6 +36,10 @@ public class UsersService {
 
     @Autowired
     private JwtRoleRepo jwtRoleRepo;
+
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     public Users findUserByUserName(String userName) {
         return usersRepo.findByUsername(userName);
@@ -63,18 +70,25 @@ public class UsersService {
     public void addFilmToUser(Integer userId, Integer filmId) {
         Users user = usersRepo.findUsersById(userId);
         Films film = filmRepo.findFilmsById(filmId);
-            Set<Films> userFilmSet = user.getUserFilm();
-        boolean flag = true;
-        for (Films i : userFilmSet) {
-            if (Objects.equals(i.getId(), film.getId())) {
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
-            userFilmSet.add(film);
-        }
-        user.setUserFilm(userFilmSet);
-        usersRepo.save(user);
+        Set<Films> userFilmSet = user.getUserFilm();
+
+        transactionTemplate.execute(
+                status -> {
+                    boolean flag = true;
+                    for (Films i : userFilmSet) {
+                        if (Objects.equals(i.getId(), film.getId())) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        userFilmSet.add(film);
+                    }
+                    user.setUserFilm(userFilmSet);
+                    usersRepo.save(user);
+                    return user;
+                }
+        );
+
     }
 }
