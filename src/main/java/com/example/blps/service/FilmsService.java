@@ -1,13 +1,10 @@
 package com.example.blps.service;
 
-import com.example.blps.config.AtomikosConfiguration;
-import com.example.blps.config.AtomikosJtaPlatform;
 import com.example.blps.dto.FilmDto;
 import com.example.blps.exception.ResourceNotFoundException;
 import com.example.blps.model.Films;
 import com.example.blps.repositories.CardsRepo;
 import com.example.blps.repositories.FilmsRepo;
-import com.example.blps.repositories.GenresRepo;
 import com.example.blps.repositories.UsersRepo;
 import com.example.blps.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.List;
 
