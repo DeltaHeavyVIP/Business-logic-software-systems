@@ -13,8 +13,8 @@ public class RabbitMQSender {
 
     private final RabbitTemplate rabbitTemplate;
     private final Exchange appExchange;
-    @Value("${rabbitmq.add-review-routingKey}")
-    private String addReviewRoutingKey;
+    @Value("${spring.rabbitmq.rate-movie-routingKey}")
+    private String spamRoutingKey;
 
     public RabbitMQSender(RabbitTemplate rabbitTemplate, Exchange appExchange) {
         this.rabbitTemplate = rabbitTemplate;
@@ -22,7 +22,7 @@ public class RabbitMQSender {
     }
 
     public void send(SpamMessage message) {
-        rabbitTemplate.convertAndSend(appExchange.getName(), addReviewRoutingKey, message);
+        rabbitTemplate.convertAndSend(appExchange.getName(), spamRoutingKey, message);
         log.info("Message: {} sent", message);
     }
 }

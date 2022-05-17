@@ -17,7 +17,7 @@ public class JmsReceiver {
         this.emailService = emailService;
     }
 
-    @JmsListener(destination = "sendSpamQueue")
+    @JmsListener(destination = "${spring.rabbitmq.rate-movie-queue}")
     public void receiveMessage(@Payload SpamMessage message) {
         log.info("Message {} received", message);
         emailService.sendEmail(message);
