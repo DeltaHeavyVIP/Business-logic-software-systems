@@ -1,6 +1,6 @@
-package com.example.blps.message.rabbitmq;
+package com.example.blps.message.producer;
 
-import com.example.blps.message.model.SpamMessage;
+import com.example.blps.message.producer.SpamMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

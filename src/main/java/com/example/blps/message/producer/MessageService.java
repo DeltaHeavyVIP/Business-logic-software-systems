@@ -1,7 +1,7 @@
-package com.example.blps.message.service;
+package com.example.blps.message.producer;
 
-import com.example.blps.message.model.SpamMessage;
-import com.example.blps.message.rabbitmq.RabbitMQSender;
+import com.example.blps.message.producer.SpamMessage;
+import com.example.blps.message.producer.RabbitMQSender;
 import com.example.blps.model.Users;
 import com.example.blps.repositories.UsersRepo;
 import lombok.extern.slf4j.Slf4j;
