@@ -14,11 +14,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.rate-movie-queue}")
+    @Value("${spring.rabbitmq.rate-movie-queue}")
     private String spamQueueName;
-    @Value("${rabbitmq.exchange}")
+    @Value("${spring.rabbitmq.exchange}")
     private String exchange;
-    @Value("${rabbitmq.rate-movie-routingKey}")
+    @Value("${spring.rabbitmq.rate-movie-routingKey}")
     private String spamRoutingKey;
 
     @Bean

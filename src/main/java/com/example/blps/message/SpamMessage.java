@@ -1,4 +1,4 @@
-package com.example.blps.message.producer;
+package com.example.blps.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
