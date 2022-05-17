@@ -3,13 +3,12 @@ package com.example.blps.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Setter
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "userFilm"})
 @Table(name = "users")
-public class Users implements UserDetails  {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -31,6 +30,10 @@ public class Users implements UserDetails  {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "email")
+    @Email
+    private String email;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_film",
@@ -39,7 +42,7 @@ public class Users implements UserDetails  {
     private Set<Films> userFilm = new HashSet<>();
 
     @NotBlank
-    @Column(name = "username",unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
     @NotBlank
