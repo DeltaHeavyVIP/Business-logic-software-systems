@@ -41,13 +41,9 @@ public class FilmsService {
     private UsersService usersService;
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
     private TransactionTemplate transactionTemplate;
 
     public List<Films> getAllFilms() {
-        messageService.sendSpamMessage();
         return filmRepo.findAll();
     }
 

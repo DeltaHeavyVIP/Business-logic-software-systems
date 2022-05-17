@@ -5,6 +5,8 @@ import com.example.blps.model.Users;
 import com.example.blps.repositories.UsersRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +25,8 @@ public class MessageService {
         this.usersRepo = usersRepo;
     }
 
+    @Scheduled(fixedRate = 120000)
+    @Async
     public void sendSpamMessage() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         log.info("Start send spam messages! Time: " + formatter.format(new Date()));
