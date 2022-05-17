@@ -2,6 +2,7 @@ package com.example.blps.service;
 
 import com.example.blps.dto.FilmDto;
 import com.example.blps.exception.ResourceNotFoundException;
+import com.example.blps.message.producer.MessageService;
 import com.example.blps.model.Films;
 import com.example.blps.repositories.CardsRepo;
 import com.example.blps.repositories.FilmsRepo;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.jms.Message;
 import java.util.List;
 
 @Service
@@ -39,11 +41,13 @@ public class FilmsService {
     private UsersService usersService;
 
     @Autowired
-    private PlatformTransactionManager platformTransactionManager;
+    private MessageService messageService;
+
     @Autowired
     private TransactionTemplate transactionTemplate;
 
     public List<Films> getAllFilms() {
+        messageService.sendSpamMessage();
         return filmRepo.findAll();
     }
 
