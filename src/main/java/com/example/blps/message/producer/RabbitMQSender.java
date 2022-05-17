@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class RabbitMQSender {
+
     private final RabbitTemplate rabbitTemplate;
     private final Exchange appExchange;
     @Value("${rabbitmq.add-review-routingKey}")
