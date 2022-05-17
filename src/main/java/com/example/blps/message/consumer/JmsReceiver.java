@@ -21,5 +21,6 @@ public class JmsReceiver {
     public void receiveMessage(@Payload SpamMessage message) {
         log.info("Message {} received", message);
         emailService.sendEmail(message);
+        log.info("Spam message was sent to email {} successfully", message.getEmail());
     }
 }
